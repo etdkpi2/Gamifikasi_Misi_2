@@ -542,6 +542,13 @@ function stagePt(node){
 /* ---------- FIT / SCALE 720x1280 di tinggi 600px ---------- */
 function fit(){
   const app=$('#app'),st=$('#stage');
+  const ae=document.activeElement;
+  const typing=ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA');
+  if(!(typing&&app.style.height)){
+    const inFrame=(()=>{try{return window.self!==window.top;}catch(e){return true;}})();
+    const vh=Math.round((window.visualViewport&&window.visualViewport.height)||window.innerHeight);
+    app.style.height=(inFrame?600:vh)+'px';
+  }
   const w=app.clientWidth||window.innerWidth,h=app.clientHeight||600;
   const s=Math.min(w/720,h/1280);
   st.style.transform=`translate(${(w-720*s)/2}px,${(h-1280*s)/2}px) scale(${s})`;
@@ -553,6 +560,7 @@ function growFrame(){
 }
 window.addEventListener('resize',fit);
 window.addEventListener('orientationchange',()=>setTimeout(fit,200));
+if(window.visualViewport)window.visualViewport.addEventListener('resize',fit);
 
 /* ---------- AUDIO SYSTEM (BGM mood + SFX, Web Audio) ---------- */
 const MOODS={
