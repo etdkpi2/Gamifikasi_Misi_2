@@ -548,6 +548,7 @@ function fit(){
     const inFrame=(()=>{try{return window.self!==window.top;}catch(e){return true;}})();
     const vh=Math.round((window.visualViewport&&window.visualViewport.height)||window.innerHeight);
     app.style.height=(inFrame?600:vh)+'px';
+ document.documentElement.style.height=document.body.style.height=app.style.height;
   }
   const w=app.clientWidth||window.innerWidth,h=app.clientHeight||600;
   const s=Math.min(w/720,h/1280);
